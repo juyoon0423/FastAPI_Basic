@@ -2,11 +2,16 @@ from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 import models, schemas, crud
 from database import engine, get_db, Base
+from routers import users
+
 
 # DB 테이블 생성
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+
+app.include_router(users.router)
+
 
 # POST /items/ → 아이템 생성
 @app.post("/items/", response_model=schemas.Item)
